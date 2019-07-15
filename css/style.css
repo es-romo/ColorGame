@@ -72,6 +72,19 @@ h1 {
     font-weight: bold;
 }
 
+.text-s1{
+    text-shadow: 2px 1px 0px #0303,
+                 3px 2px 0px #0303,
+                 4px 3px 0px #0303,
+                 5px 4px 0px #0303;
+}
+
+.text-s2{
+    text-shadow: 1px 2px 0px #0303,
+                 2px 3px 0px #0303,
+                 3px 4px 0px #0303;
+}
+
 /* Colors */
 .blue{
     color:  dodgerblue;
