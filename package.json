@@ -1,0 +1,19 @@
+{
+  "name": "colorgame",
+  "version": "1.0.0",
+  "description": "Simple js RGB guessing game",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "keywords": [
+    "js",
+    "webdev",
+    "front-end"
+  ],
+  "author": "Esteban Romo",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^5.0.6"
+  }
+}

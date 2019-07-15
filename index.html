@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Color Game</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body class="t-center">
+    <div class="bg-blue" id="bgContainer">
+        <div class="container title">
+            <h1 class="fw-normal">THE GREAT</h1>
+            <h1 class="display1 text-upper" id="colorDisplay">RGB</h1>
+            <h1 class="fw-normal">GUESSING GAME</h1>
+        </div>
+    </div>
+    <div class="bg-white fw-bold" id="stripe">
+        <div class="container flex f-justify-between f-align-center">
+            <button class="btn display2 no-outline" id="reset">NEW COLORS</button>
+            <span class="dark display2" id="messageDisplay"></span>
+            <div id="gameModes">
+                <button class="btn display2 no-outline" id="easyButton">EASY</button>
+                <button class="btn btn-active display2 no-outline" id="hardButton">HARD</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container pt">
+        <div class="square rounded"></div>
+        <div class="square rounded"></div>
+        <div class="square rounded"></div>
+        <div class="square rounded"></div>
+        <div class="square rounded"></div>
+        <div class="square rounded"></div>
+    </div>
+
+    <script src="js/colorGame.js"></script>
+</body>
+
+</html>
