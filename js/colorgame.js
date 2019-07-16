@@ -1,3 +1,14 @@
+class RGBcolor {
+    constructor(R, G, B) {
+        this.R = R;
+        this.G = G;
+        this.B = B;
+    }
+    toText() {
+        return "rgb(" + this.R + ", " + this.G + ", " + this.B + ")";
+    }
+}
+
 let squares = document.querySelectorAll(".square");
 let colorDisplay = document.querySelector("#colorDisplay");
 let titleDisplay = document.querySelector("#titleDisplay");
@@ -7,11 +18,12 @@ let resetButton = document.querySelector("#reset");
 let easyButton = document.querySelector("#easyButton");
 let hardButton = document.querySelector("#hardButton");
 
+//Global Variables
 let cant = squares.length;
-let colors = generateRandomColors(cant);
-let pickedColor = pickColor();
-let blocked = false;
-colorDisplay.textContent = rgbToText(pickedColor);
+let colors;
+let pickedColor;
+let blocked;
+
 
 resetButton.addEventListener("click", function () {
     newGame(cant);
@@ -40,13 +52,25 @@ for (let i = 0; i < squares.length; i++) {
     squares[i].addEventListener("click", function () {
         if (!blocked) {
             let squareColor = this.style.backgroundColor;
-            if (squareColor === rgbToText(pickedColor)) {
-                messageDisplay.textContent = "Correct!";
-                display(cant);
-                bgContainer.style.backgroundColor = rgbToText(pickedColor);
-                changeColors(pickedColor);
-                titleDisplay.style.color = getBack(pickedColor);
+            if (squareColor === pickedColor.toText()) {
+                //Block click event
                 blocked = true;
+                //Show "Correct!"
+                messageDisplay.textContent = "Correct!";
+                //Change all squares to pickedColor
+                changeColors(pickedColor);
+                //Display all squares
+                display(cant);
+                //Change background color to to picked color 
+                bgContainer.style.backgroundColor = pickedColor.toText();
+                //Change title color depending on pickedColor brightness
+                if ((pickedColor.R * 0.299 + pickedColor.G * 0.587 + pickedColor.B * 0.114) > 186) {
+                    titleDisplay.classList.add("dark");
+                    titleDisplay.classList.remove("white");
+                } else {
+                    titleDisplay.classList.add("white");
+                    titleDisplay.classList.remove("dark");
+                }
             } else {
                 this.classList.add("hidden");
                 messageDisplay.textContent = "Try Again!";
@@ -54,89 +78,24 @@ for (let i = 0; i < squares.length; i++) {
         }
     })
 }
+//GameCode
+newGame(cant);
 
+
+//functions
 document.body.onkeyup = function (e) {
     switch (e.keyCode) {
         case 32: //Space 
             newGame(cant);
             break;
         case 81: //Q
-            switcMode();
+            switchMode();
             break;
     }
 }
 
-//set Inital Colors
-changeColors(colors);
+function switchMode() {
 
-function generateRandomColors(num) {
-    //make an array
-    let arr = [];
-    //repeat num times
-    for (let i = 0; i < num; i++) {
-        arr.push(function () {
-            //pick each color from 0 - 255
-            let r = Math.floor(Math.random() * 255) + 1;
-            let g = Math.floor(Math.random() * 255) + 1;
-            let b = Math.floor(Math.random() * 255) + 1;
-            //return "rgb(" + r + ", " + g + ", " + b + ")";
-            return [r, g, b];
-        }());
-    }
-    //return array
-    return arr;
-}
-
-function rgbToText(rgb) {
-    return "rgb(" + rgb[0] + ", " + rgb[1] + ", " + rgb[2] + ")";
-}
-
-function getBack(color) {
-    if ((color[0] * 0.299 + color[1] * 0.587 + color[2] * 0.114) > 186) {
-        return "#232323";
-    } else {
-        return "#f3f3f3";
-    }
-}
-
-function changeColors(color) {
-
-    for (let i = 0; i < colors.length; i++) {
-        squares[i].style.backgroundColor = function () {
-            if (Array.isArray(color[0])) return rgbToText(color[i]);
-            return rgbToText(color);
-        }();
-    }
-}
-
-function pickColor() {
-    let randomIndex = Math.floor(Math.random() * colors.length);
-    return colors[randomIndex];
-}
-
-function display(cant) {
-    for (let i = 0; i < squares.length; i++) {
-        if (i < cant) {
-            squares[i].classList.remove("hidden");
-        } else {
-            squares[i].classList.add("hidden");
-        }
-    }
-}
-
-function newGame(cant) {
-    blocked = false;
-    display(cant);
-    colors = generateRandomColors(cant);
-    pickedColor = pickColor();
-    colorDisplay.textContent = rgbToText(pickedColor);
-    titleDisplay.style.color = "#f3f3f3"
-    messageDisplay.textContent = "";
-    bgContainer.style.backgroundColor = null;
-    changeColors(colors);
-};
-
-function switcMode() {
     if (cant === 6) {
         cant = 3;
         newGame(cant);
@@ -148,4 +107,70 @@ function switcMode() {
         hardButton.classList.add("btn-active");
         easyButton.classList.remove("btn-active");
     }
+
+};
+
+function generateRandomColors(num) {
+    //make an array
+    let arr = [];
+    //repeat num times
+    for (let i = 0; i < num; i++) {
+        arr.push(function () {
+            //pick each color from 0 - 255
+            let r = Math.floor(Math.random() * 255) + 1;
+            let g = Math.floor(Math.random() * 255) + 1;
+            let b = Math.floor(Math.random() * 255) + 1;
+            //RGB color object
+            return new RGBcolor(r, g, b);
+        }());
+    }
+    //return array
+    return arr;
+}
+
+function changeColors(color) {
+
+    for (let i = 0; i < colors.length; i++) {
+        squares[i].style.backgroundColor = function () {
+            if (Array.isArray(color)) return color[i].toText();
+            return color.toText();
+        }();
+    }
+
+}
+
+function pickColor() {
+
+    let randomIndex = Math.floor(Math.random() * colors.length);
+    return colors[randomIndex];
+
+}
+
+function display(cant) {
+
+    for (let i = 0; i < squares.length; i++) {
+        if (i < cant) {
+            squares[i].classList.remove("hidden");
+        } else {
+            squares[i].classList.add("hidden");
+        }
+    }
+
+}
+
+function newGame(cant) {
+
+    blocked = false;
+    display(cant);
+    colors = generateRandomColors(cant);
+    pickedColor = pickColor();
+    colorDisplay.textContent = pickedColor.toText();
+    //reset titleDisplay color to white
+    if (titleDisplay.classList.contains("dark")) titleDisplay.classList.remove("dark");
+    titleDisplay.classList.add("white");
+    //
+    messageDisplay.textContent = null;
+    bgContainer.style.backgroundColor = null;
+    changeColors(colors);
+
 };
