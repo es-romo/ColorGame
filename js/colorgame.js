@@ -8,7 +8,8 @@ class RGBcolor {
         return "rgb(" + this.R + ", " + this.G + ", " + this.B + ")";
     }
 }
-let gamemodeButtons = document.querySelectorAll("#gameModes button")
+
+let gamemodeButtons = document.querySelectorAll("#gameModes button");
 let squareContainer = document.querySelector("#squareContainer");
 let squares = document.querySelectorAll(".square");
 let colorDisplay = document.querySelector("#colorDisplay");
@@ -25,9 +26,10 @@ let colors;
 let pickedColor;
 let blocked;
 
-init();
+//entry point
+main();
 
-function init() {
+function main() {
     resetButton.addEventListener("click", function () {
         newGame(cant);
     })
@@ -92,14 +94,16 @@ function init() {
 }
 
 //functions
-document.body.onkeyup = function (e) {
+window.onkeydown = function (e) {
     switch (e.keyCode) {
         case 32: //Space
             newGame(cant);
+            return false;
             break;
         case 81: //Q
             //switchMode();
             gameMode("toggle");
+            return false;
             // gamemode()
             break;
     }
