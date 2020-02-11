@@ -1,5 +1,7 @@
 /* General */
+
 body {
+    touch-action: manipulation;
     background-color: #232323;
     font-family: Arial, Helvetica, sans-serif;
     color: white;
