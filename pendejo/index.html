@@ -1,17 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <style>
-        body {
-            background-image: url("bruh.png");
-            background-repeat: repeat;
-        }
-    </style>
-</head>
-<body>
 
+<head>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta charset="utf-8">
+    <base target="_parent" />
+    <title>No brooo</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="puzzle.css">
+    <link rel="stylesheet" href="bruh.css">
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=default"></script>
+    <script src="puzzle.js"></script>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>😭</text></svg>">
+    
+</head>
+
+<body class="center-content">
+    
+    <input type="checkbox" name="options" id="options" style="display: none;">
+
+    <div id="puzzle1" style="padding: 20px;"></div>
+
+    <script type="text/javascript">
+
+        document.addEventListener('DOMContentLoaded',function() {
+            function getURLParameter(sParam) {
+                const sPageURL = decodeURIComponent(window.location.search.substring(1)),
+                    sURLVariables = sPageURL.split('&');
+                let sParameterName,
+                    i;
+
+                for (i = 0; i < sURLVariables.length; i++) {
+                    sParameterName = sURLVariables[i].split('=');
+
+                    if (sParameterName[0] === sParam) {
+                        return sParameterName[1] === undefined ? true : sParameterName[1];
+                    }
+                }
+            }
+
+            const opts = {};
+            const image = "teiliy.png";
+            const puzzle1 = document.querySelector('#puzzle1');
+            puzzle1.pz = new Puzzle({
+                el           : puzzle1,
+                image        : image,
+                difficulty   : "expert",
+                dragenter    : function(evt){onDragEnter(evt)},
+                dragleave    : function(evt){onDragLeave(evt)},
+                mousedown    : function(evt){onMouseDown(evt)},
+                mouseup      : function(evt){onMouseUp(evt)},
+                finished     : function(evt){puzzleFin(evt)}
+            }).init();
+
+            // Puzzle events
+
+            function onDragEnter(evt) {
+                if (!evt.target.draggable) { 
+                    evt.target.classList.add('highlight');
+                }
+            }
+
+            function onDragLeave(evt) {
+                if (!evt.target.draggable) {
+                    evt.target.classList.remove('highlight');
+                }
+            }
+
+            function onMouseDown(evt) {
+                evt.target.children[0].classList.add('highlight');
+            }
+
+            function onMouseUp(evt) {
+                evt.target.children[0].classList.remove('highlight');
+            }
+
+            function puzzleFin(evt) {
+                setTimeout(function() {
+                    Object.assign(evt.self.fullImg.style,{'opacity':1,'z-index':1});
+                }.bind(evt),300); 
+                new Audio('bruh.mp3').play();
+
+            }
+            // Make sure number inputs are between 1 and 10
+            document.querySelectorAll('input[type="number"]').forEach(function(item){
+                item.addEventListener('change',function(){
+                    if (Number(this.value) > 10) {
+                        this.value = 10;
+                    } else if (Number(this.value) <= 0) {
+                        this.value = 1;
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>
